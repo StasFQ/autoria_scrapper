@@ -50,7 +50,7 @@ services:
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: Stason2005
+      POSTGRES_PASSWORD: stas123
       POSTGRES_HOST: db
     ports:
       - '5432:5432'

@@ -23,7 +23,7 @@ class CarCredential(Base):
     datetime_found = Column(DateTime, default=func.now())
 
 
-engine = create_engine('postgresql://postgres:Stason2005@db:5432/postgres')
+engine = create_engine('postgresql://postgres:stas123@db:5432/postgres')
 Session = sessionmaker(bind=engine)
 session = Session()
 

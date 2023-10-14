@@ -7,7 +7,7 @@ app.conf.beat_schedule = {
          "task": 'main.parser',
          'schedule': crontab(hour='*/12', minute='0')
      },
-    'dumper': {
+     'dumper': {
          "task": 'script.drop_db.dumper',
          'schedule': crontab(hour='0', minute='0')
      }
@@ -16,4 +16,3 @@ app.conf.beat_schedule = {
 }
 
 app.autodiscover_tasks()
-
