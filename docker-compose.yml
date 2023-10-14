@@ -1,0 +1,66 @@
+version: '3'
+
+services:
+  script:
+    build:
+      context: .
+    restart: on-failure
+    networks:
+      - db_network
+    depends_on:
+      - db
+      - redis
+  redis:
+    container_name: redis
+    image: redis
+    networks:
+      - db_network
+    ports:
+      - "6379:6379"
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    networks:
+      - db_network
+    depends_on:
+      - redis
+      - db
+    restart: on-failure
+    command: bash -c "sleep 10 && celery -A utils worker --loglevel=INFO"
+
+  celery_beat:
+      build:
+        context: .
+        dockerfile: Dockerfile
+      networks:
+        - db_network
+      depends_on:
+        - redis
+        - db
+        - celery_worker
+      command: bash -c "sleep 10 && celery -A utils worker --loglevel=info -B"
+
+
+  db:
+    container_name: db
+    image: postgres:12
+    restart: on-failure
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: Stason2005
+      POSTGRES_HOST: db
+    ports:
+      - '5432:5432'
+    networks:
+      - db_network
+    volumes:
+      - db:/var/lib/postgresql/data
+
+networks:
+  db_network:
+
+volumes:
+  db:
